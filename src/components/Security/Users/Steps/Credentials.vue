@@ -63,18 +63,6 @@
 
         finalCredentials[this.strategy] = credentials
         this.$emit('submit', finalCredentials)
-//        this.error = ''
-//
-//        if (!credentials) {
-//          this.error = 'The credentials are invalid, please review it'
-//          return
-//        }
-//
-//        kuzzle.security.createCredentialsPromise(this.strategy, this.id, credentials)
-//          .then(() => this.$router.push({name: 'SecurityUsersList'}))
-//          .catch(err => {
-//            this.error = `An error occured while creating user: <br />${err.message}`
-//          })
       },
       selectStrategy (strategy) {
         this.strategy = strategy

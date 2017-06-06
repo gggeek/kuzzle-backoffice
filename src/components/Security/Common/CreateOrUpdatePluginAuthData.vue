@@ -9,8 +9,8 @@
               Form
               <input :disabled="warningSwitch" type="checkbox" @change="switchView" :checked="$store.state.collection.defaultViewJson">
               <span
-                class="lever"
-                v-title="{
+                      class="lever"
+                      v-title="{
                 active: warningSwitch,
                 position: 'bottom',
                 title: 'You have unspecified custom attribute(s). Please edit the collection definition, or remove them.'
@@ -34,8 +34,8 @@
         <div class="row json-view" v-if="!isFormView">
           <div class="col s6 card" :class="{s12: $store.state.collection.isRealtimeOnly}">
             <div class="card-content">
-              <span class="card-title">Credentials</span>
-              <json-editor :id="idContent" class="document-json" :content="jsonDocument" ref="jsoneditor" @changed="jsonChanged"></json-editor>
+              <span class="card-title">Document</span>
+              <json-editor :id="idContent" class="document-json" :content="jsonDocument" ref="jsoneditor" @changed="jsonChanged" :refreshAce="refreshAce" :height="300"></json-editor>
             </div>
           </div>
 
@@ -43,7 +43,7 @@
           <div class="col s6 card" v-if="!$store.state.collection.isRealtimeOnly">
             <div class="card-content">
               <span class="card-title">Fields</span>
-              <json-editor :id="idMapping" class="document-json" :content="mapping" :readonly="true"></json-editor>
+              <json-editor :id="idMapping" class="document-json" :content="mapping" :readonly="true" :refresh-ace="refreshAce" :height="300"></json-editor>
             </div>
           </div>
         </div>
@@ -102,12 +102,8 @@
   import {SET_COLLECTION_DEFAULT_VIEW_JSON} from '../../../vuex/modules/collection/mutation-types'
   import {hasSameSchema} from '../../../services/collectionHelper'
 
-  // We have to init the JSON only if the data comes from the server.
-  // This flag allow to not trigger an infinite loop when the doc is updated
-  let jsonAlreadyInit = false
-
   export default {
-    name: 'DocumentCreateOrUpdate',
+    name: 'CreateOrUpdatePluginAuthData',
     components: {
       JsonForm,
       JsonEditor
@@ -116,9 +112,8 @@
       error: String,
       index: String,
       collection: String,
-      update: Boolean,
       value: Object,
-      mapping: [Object, Array],
+      mapping: [Array, Object],
       idContent: {
         type: String,
         default: 'content'
@@ -126,6 +121,14 @@
       idMapping: {
         type: String,
         default: 'mapping'
+      },
+      refreshAce: {
+        type: Boolean,
+        default: false
+      },
+      update: {
+        type: Boolean,
+        default: false
       }
     },
     directives: {
@@ -135,7 +138,9 @@
     data () {
       return {
         jsonDocument: {},
-        warningSwitch: false
+        warningSwitch: false,
+        jsonAlreadyInit: false   // We have to init the JSON only if the data comes from the server.
+                                 // This flag allow to not trigger an infinite loop when the doc is updated
       }
     },
     methods: {
@@ -173,10 +178,10 @@
       jsonChanged (json) {
         this.warningSwitch = !hasSameSchema(json, this.$store.state.collection.schema)
         this.$emit('input', json)
-        jsonAlreadyInit = true
+        this.jsonAlreadyInit = true
       },
       initJsonDocument () {
-        if (!jsonAlreadyInit) {
+        if (!this.jsonAlreadyInit) {
           if (this.value) {
             if (!Object.keys(this.value).length) {
               this.jsonDocument = {}
@@ -194,7 +199,7 @@
       }
     },
     mounted () {
-      jsonAlreadyInit = false
+      this.jsonAlreadyInit = false
       this.initJsonDocument()
     },
     watch: {

@@ -12,7 +12,7 @@
     </div>
 
     <div id="content-tab">
-      <update
+      <CreateOrUpdate
               id="content"
               @document-create::create="update"
               @document-create::cancel="cancel"
@@ -25,11 +25,11 @@
               id-mapping="contentMapping"
               id-content="content"
               :refresh-ace="refresh">
-      </update>
+      </CreateOrUpdate>
     </div>
 
     <div id="credentials-tab">
-      <update
+      <CreateOrUpdate
               id="credentials"
               @document-create::create="update"
               @document-create::cancel="cancel"
@@ -42,7 +42,7 @@
               id-mapping="credentialsMapping"
               id-content="credentialsMapping"
               :refresh-ace="refresh">
-      </update>
+      </CreateOrUpdate>
     </div>
 
   </div>
@@ -57,7 +57,7 @@
 <script>
   import Headline from '../../Materialize/Headline'
   import kuzzle from '../../../services/kuzzle'
-  import Update from '../Common/UpdatePluginAuthData'
+  import CreateOrUpdate from '../Common/CreateOrUpdatePluginAuthData'
   import {SET_TOAST} from '../../../vuex/modules/common/toaster/mutation-types'
   import {getMappingUsers} from '../../../services/kuzzleWrapper'
   import Vue from 'vue'
@@ -66,7 +66,7 @@
     name: 'UpdateUser',
     components: {
       Headline,
-      Update
+      CreateOrUpdate
     },
     props: {
       index: String,
