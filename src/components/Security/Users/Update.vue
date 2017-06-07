@@ -12,27 +12,13 @@
     </div>
 
     <div id="content-tab">
-      <CreateOrUpdate
-              id="content"
-              @document-create::create="update"
-              @document-create::cancel="cancel"
-              @document-create::error="setError"
-              index="%kuzzle"
-              collection="users"
-              :hide-id="true"
-              v-model="content"
-              :mapping="contentMapping"
-              id-mapping="contentMapping"
-              id-content="content"
-              :refresh-ace="refresh">
-      </CreateOrUpdate>
     </div>
 
     <div id="credentials-tab">
       <CreateOrUpdate
               id="credentials"
-              @document-create::create="update"
-              @document-create::cancel="cancel"
+              @create="update"
+              @cancel="cancel"
               @document-create::error="setError"
               index="%kuzzle"
               collection="users"
@@ -41,7 +27,8 @@
               :mapping="credentialsMapping"
               id-mapping="credentialsMapping"
               id-content="credentialsMapping"
-              :refresh-ace="refresh">
+              :refresh-ace="refresh"
+              :update="true">
       </CreateOrUpdate>
     </div>
 
@@ -84,31 +71,9 @@
     methods: {
       update (user) {
         console.log('##', user)
-//        if (!user) {
-//          this.$store.commit(SET_TOAST, {text: 'Invalid document'})
-//          return
-//        }
-//
-//        kuzzle
-//          .security
-//          .updateUserPromise(decodeURIComponent(this.$store.state.route.params.id), user)
-//          .then(() => {
-//            setTimeout(() => { // we can't perform refresh index on %kuzzle
-//              this.$router.push({name: 'SecurityUsersList'})
-//            }, 1000)
-//          })
-//          .catch((err) => {
-//            if (err) {
-//              this.$store.commit(SET_TOAST, {text: err.message})
-//            }
-//          })
       },
       cancel () {
-        if (this.$router._prevTransition && this.$router._prevTransition.to) {
-          this.$router.go(this.$router._prevTransition.to)
-        } else {
-          this.$router.push({name: 'SecurityUsersList'})
-        }
+        this.$router.push({name: 'SecurityUsersList'})
       },
       setError (payload) {
         this.error = payload

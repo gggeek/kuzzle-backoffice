@@ -149,17 +149,17 @@
       },
       create () {
         if (!this.$store.state.collection.defaultViewJson) {
-          return this.$emit('credentials-create::create', {...this.value})
+          return this.$emit('create', {...this.value})
         }
 
         if (this.$refs.jsoneditor.isValid()) {
-          this.$emit('credentials-create::create', {...this.value})
+          this.$emit('create', {...this.value})
         } else {
           this.$emit('credentials-create::error', 'Invalid JSON provided.')
         }
       },
       cancel () {
-        this.$emit('credentials-create::cancel')
+        this.$emit('cancel')
       },
       updateValue (e) {
         this.$emit('input', {...this.value, [e.name]: e.value})

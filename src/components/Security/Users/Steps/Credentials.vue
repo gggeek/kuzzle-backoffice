@@ -1,17 +1,13 @@
 <template>
   <div>
-    <headline>
-      Credentials
-    </headline>
-
     <label></label>
     <m-select v-model="strategy" @input="selectStrategy">
       <option v-for="strategy in strategies">{{strategy}}</option>
     </m-select>
 
     <create-or-update
-            @credentials-create::create="next"
-            @credentials-create::cancel="cancel"
+            @create="next"
+            @cancel="cancel"
             @credentials-create::reset-error="error = null"
             @credentials-create::error="setError"
             :error="error"
@@ -74,7 +70,7 @@
         }
       },
       cancel () {
-
+        this.$emit('cancel')
       },
       setError () {
 

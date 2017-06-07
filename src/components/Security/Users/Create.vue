@@ -27,6 +27,7 @@
             v-show="editionStep === 1"
             @submit="onCredentialsSubmitted"
             @step-change="saveCredentialsData"
+            @cancel="onCancel"
             :step="editionStep"></credentials>
           <custom
             v-show="editionStep === 2"
